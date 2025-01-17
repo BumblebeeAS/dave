@@ -4,7 +4,7 @@ project(bb_robot_models)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY description launch meshes config
+  DIRECTORY launch config
   DESTINATION share/bb_robot_models
 )
 

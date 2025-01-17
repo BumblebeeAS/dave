@@ -83,10 +83,9 @@ def generate_launch_description():
 
     description_file = PathJoinSubstitution(
         [
-            FindPackageShare("bb_robot_models"),
-            "description",
-            namespace,
-            "model.sdf",
+            FindPackageShare("auv4_description"),
+            "urdf",
+            "auv4.urdf",
         ]
     )
 
