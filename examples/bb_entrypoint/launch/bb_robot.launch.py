@@ -1,8 +1,12 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    OpaqueFunction,
+)
 from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -27,7 +31,7 @@ def launch_setup(context, *args, **kwargs):
         world_name = LaunchConfiguration("world_name").perform(context)
         world_filename = f"{world_name}.world"
         world_filepath = PathJoinSubstitution(
-            [FindPackageShare("dave_worlds"), "worlds", world_filename]
+            [FindPackageShare("bb_worlds"), "worlds", world_filename]
         )
         gz_args = [world_filepath]
     else:
