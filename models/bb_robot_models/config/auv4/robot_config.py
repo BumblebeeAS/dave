@@ -28,9 +28,9 @@ def launch_setup(context, *args, **kwargs):
     )
 
     arguments = thruster_args + [
-        # f"/model/{namespace}/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
-        # f"/model/{namespace}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
-        # f"/model/{namespace}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
+        f"/model/{namespace}/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+        f"/model/{namespace}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
+        f"/model/{namespace}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
         f"/model/{namespace}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
         # f"/model/{namespace}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
         # f"/model/{namespace}/camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
