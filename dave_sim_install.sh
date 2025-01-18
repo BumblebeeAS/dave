@@ -88,23 +88,6 @@ sudo apt update && apt install -y \
     ros-dev-tools
 
 echo
-echo -e "\033[34mSetting up Gazebo source directory...\033[0m"
-mkdir -p /opt/gazebo/src && cd /opt/gazebo/src || exit
-curl -O https://raw.githubusercontent.com/gazebo-tooling/gazebodistro/master/collection-harmonic.yaml
-vcs import < collection-harmonic.yaml
-
-echo -e "\033[34mUpdating package list and installing dependencies...\033[0m"
-# shellcheck disable=SC2046,SC2006
-sudo apt -y install $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ')
-
-echo -e "\033[34mBuilding the project with colcon...\033[0m"
-cd /opt/gazebo || exit
-# Build gz-physics with limited cores to avoid memory issues
-MAKEFLAGS="-j 2" colcon build --cmake-args -DBUILD_TESTING=OFF --merge-install --packages-up-to gz-physics7
-# Full build
-colcon build --cmake-args -DBUILD_TESTING=OFF --merge-install
-
-echo
 echo -e "\033[32m============================================================\033[0m"
 echo -e "\033[32mROS-Gazebo Framework Installation completed. Awesome! 🤘🚀 \033[0m"
 echo -e "Following command will set-up ROS-Gazebo environment variables to run it"
