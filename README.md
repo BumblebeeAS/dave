@@ -16,7 +16,7 @@ Run `dave_sim_install.sh`. Then run `gz_packages_install.sh`.
 
 ### 2. Clone and Build AUV Description
 
-Clone `https://github.com/BumblebeeAS/auv4_description` using under the `sim-test` branch:
+Clone https://github.com/BumblebeeAS/auv4_description using under the `sim-test` branch:
 
 ```bash
 git clone https://github.com/BumblebeeAS/auv4_description -b sim-test
