@@ -1,8 +1,13 @@
 # DAVE
 
-[![Publish a Docker image (AMD64; Common X86_64 Linux Machine)](https://github.com/IOES-Lab/dave/actions/workflows/docker-amd64.yml/badge.svg)](https://github.com/IOES-Lab/dave/actions/workflows/docker-amd64.yml)
-[![Publish a Docker image (ARM64; Apple Silicon)](https://github.com/IOES-Lab/dave/actions/workflows/docker-arm64v8.yml/badge.svg?branch=ros2)](https://github.com/IOES-Lab/dave/actions/workflows/docker-arm64v8.yml)
+See the original project at [http://dave-ros2.notion.site](http://dave-ros2.notion.site)
 
-Documentation is currently at [http://dave-ros2.notion.site](http://dave-ros2.notion.site)
+## Installation
 
-For contribution, do `pip3 install pre-commit && pre-commit install && pre-commit run --all-files` before commit.
+### Ubuntu 22.04
+
+See https://www.notion.so/nusbbas/Simulation-1673cacaefa180a5a61efbbbef7b6a23#1673cacaefa18009944ccfa6b8a8fffc
+
+### Ubuntu 24.04
+
+Run `dave_sim_install.sh`. Then run `gz_packages_install.sh`.
