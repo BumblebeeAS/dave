@@ -82,7 +82,7 @@ def generate_launch_description():
         [
             FindPackageShare("auv4_description"),
             "urdf",
-            "auv4.urdf",
+            "auv4.gazebo.urdf",
         ]
     )
 
