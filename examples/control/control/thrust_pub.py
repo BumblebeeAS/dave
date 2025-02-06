@@ -17,7 +17,6 @@ PROP_TOPICS = [
 
 
 class SingleThrustPublisher(Node):
-
     def __init__(self, name, topic):
         super().__init__(name)
         self.name = name
@@ -32,7 +31,6 @@ class SingleThrustPublisher(Node):
 
 
 class MultiThrustPublisher(Node):
-
     def __init__(self):
         super().__init__("thrust_publisher_node")
         self.thrustPubs = []
