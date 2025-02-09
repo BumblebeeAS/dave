@@ -23,7 +23,7 @@ def launch_setup(context, *args, **kwargs):
         remappings.extend(
             [
                 create_remapping(
-                    f"{joint_base}/cmd_thrust", f"/thruster/t{ros_thruster}/force"
+                    f"{joint_base}/cmd_thrust", f"/sim/thruster/t{ros_thruster}/force"
                 ),
                 create_remapping(f"{joint_base}/ang_vel", f"{joint_base}/ang_vel"),
                 create_remapping(

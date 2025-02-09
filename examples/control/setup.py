@@ -21,6 +21,7 @@ setup(
         "console_scripts": [
             "IMUTest = control.imu_sub:main",
             "moveFrontTest = unit_tests.move_front:main",
+            "thrust_republisher = control.thrust_republisher:main",
         ],
     },
 )
