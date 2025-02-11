@@ -42,6 +42,7 @@ def launch_setup(context, *args, **kwargs):
         # create_remapping("/magnetometer", "/magnetometer"),
         # create_remapping("/camera/image", "/camera/image"),
         # create_remapping("/camera/camera_info", "/camera/camera_info"),
+        # Unable to add sim dvl because of the special Dave Message type 
     ]
     remappings.extend(additional_remappings)
 

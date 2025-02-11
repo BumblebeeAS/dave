@@ -1,3 +1,6 @@
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
@@ -91,7 +94,17 @@ def launch_setup(context, *args, **kwargs):
         }.items(),
     )
 
-    include = [gz_sim_launch, robot_launch]
+    robot_description_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("auv4_description"),
+                "launch",
+                "tf.launch.py",
+            )
+        )
+    )
+
+    include = [gz_sim_launch, robot_launch, robot_description_launch]
 
     return include
 
