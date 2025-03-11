@@ -1,19 +1,29 @@
 from rclpy.node import Node
 from std_msgs.msg import Float64
 
+# PROP_NAMES = [
+#     "thruster_1",
+#     "thruster_2",
+#     "thruster_3",
+#     "thruster_4",
+#     "thruster_5",
+#     "thruster_6",
+#     "thruster_7",
+# ]
 PROP_NAMES = [
-    "thruster_1",
-    "thruster_2",
-    "thruster_3",
-    "thruster_4",
-    "thruster_5",
-    "thruster_6",
-    "thruster_7",
+    "t0",
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5",
+    "t6",
 ]
 
-PROP_TOPICS = [
-    f"/model/auv4/joint/{prop_name}_joint/cmd_thrust" for prop_name in PROP_NAMES
-]
+# PROP_TOPICS = [
+#     f"/model/auv4/joint/{prop_name}_joint/cmd_thrust" for prop_name in PROP_NAMES
+# ]
+PROP_TOPICS = [f"/auv4/sim/thruster/{prop_name}/force" for prop_name in PROP_NAMES]
 
 
 class SingleThrustPublisher(Node):

@@ -1,10 +1,13 @@
+import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
 
 
 def launch_setup(context, *args, **kwargs):
+    package_name = "bb_robot_models"
     namespace = LaunchConfiguration("namespace").perform(context)
 
     # Define base topics for both source (Gazebo) and target (ROS2)
@@ -73,11 +76,23 @@ def launch_setup(context, *args, **kwargs):
         f"{gz_base}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
         f"{gz_base}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
         f"{gz_base}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
+        f"/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
         # f"{gz_base}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
         # f"{gz_base}/camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
         # f"{gz_base}/camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
     ]
 
+    # Debug yaml file for clock
+    # bridge_params = os.path.join(get_package_share_directory(package_name),'config/','gz_bridge.yaml')
+    # bridge = Node(
+    #     package="ros_gz_bridge",
+    #     executable="parameter_bridge",
+    #     arguments=[
+    #         '--ros-args',
+    #         '-p',
+    #         f'config_file:={bridge_params}',
+    #     ]
+    # )
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
