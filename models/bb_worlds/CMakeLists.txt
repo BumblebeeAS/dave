@@ -5,7 +5,7 @@ project(bb_worlds)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY worlds media
+  DIRECTORY worlds media models
   DESTINATION share/${PROJECT_NAME}
 )
 

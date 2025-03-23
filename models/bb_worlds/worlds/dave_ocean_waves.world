@@ -113,6 +113,10 @@
       <pose>0 0 -95 0 0 0</pose>
     </include>
 
+    <include>
+      <uri>package://dave/models/bb_worlds/models/sauvc_gate</uri>
+    </include>
+
     <plugin
       filename="gz-sim-buoyancy-system"
       name="gz::sim::systems::Buoyancy">
