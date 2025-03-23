@@ -114,8 +114,10 @@
     </include>
 
     <include>
-      <uri>package://dave/models/bb_worlds/models/sauvc_gate</uri>
+      <!-- <uri>file:///home/pengxuan/workspaces/auv4_ws/src/dave/models/bb_worlds/models/sauvc_gate</uri> -->
+      <uri>model://sauvc_gate</uri>
     </include>
+
 
     <plugin
       filename="gz-sim-buoyancy-system"

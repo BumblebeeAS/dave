@@ -8,6 +8,7 @@
       <geometry>
         <mesh>
           <scale>1 1 1</scale>
+          <!-- <uri>file:///home/pengxuan/workspaces/auv4_ws/src/dave/models/bb_worlds/models/sauvc_gate/gate.dae</uri> -->
           <uri>model://sauvc_gate/gate.dae</uri>
         </mesh>
       </geometry>
@@ -19,6 +20,7 @@
       <geometry>
         <mesh>
           <scale>1 1 1</scale>
+          <!-- <uri>file:///home/pengxuan/workspaces/auv4_ws/src/dave/models/bb_worlds/models/sauvc_gate/gate.dae</uri> -->
           <uri>model://sauvc_gate/gate.dae</uri>
         </mesh>
       </geometry>
