@@ -22,6 +22,7 @@ setup(
             "IMUTest = control.imu_sub:main",
             "moveFrontTest = unit_tests.move_front:main",
             "thrust_republisher = control.thrust_republisher:main",
+            "bb_thrust_republisher = control.bb_thrust_republisher:main"
         ],
     },
 )
