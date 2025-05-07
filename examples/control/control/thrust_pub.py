@@ -1,18 +1,10 @@
 from rclpy.node import Node
 from std_msgs.msg import Float64
 
-PROP_NAMES = [
-    "thruster_1",
-    "thruster_2",
-    "thruster_3",
-    "thruster_4",
-    "thruster_5",
-    "thruster_6",
-    "thruster_7",
-]
+PROP_NAMES = [f"t{i}" for i in range(7)]
 
 PROP_TOPICS = [
-    f"/model/auv4/joint/{prop_name}_joint/cmd_thrust" for prop_name in PROP_NAMES
+    f"/auv4/sim/thruster/{prop_name}/force" for prop_name in PROP_NAMES
 ]
 
 

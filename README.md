@@ -69,4 +69,3 @@ privileged: true
 group_add:
       - video
 ```
-
