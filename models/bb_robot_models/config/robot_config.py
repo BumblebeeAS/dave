@@ -42,6 +42,7 @@ def launch_setup(context, *args, **kwargs):
         # create_remapping("/magnetometer", "/magnetometer"),
         # create_remapping("/camera/image", "/camera/image"),
         # create_remapping("/camera/camera_info", "/camera/camera_info"),
+        # Unable to add sim dvl because of the special Dave Message type
     ]
     remappings.extend(additional_remappings)
 
@@ -72,6 +73,7 @@ def launch_setup(context, *args, **kwargs):
         f"{gz_base}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
         f"{gz_base}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
         f"{gz_base}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
+        f"/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
         # f"{gz_base}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
         # f"{gz_base}/camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
         # f"{gz_base}/camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",

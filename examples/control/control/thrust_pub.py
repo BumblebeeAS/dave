@@ -2,10 +2,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float64
 
 PROP_NAMES = [f"t{i}" for i in range(7)]
-
-PROP_TOPICS = [
-    f"/auv4/sim/thruster/{prop_name}/force" for prop_name in PROP_NAMES
-]
+PROP_TOPICS = [f"/auv4/sim/thruster/{prop_name}/force" for prop_name in PROP_NAMES]
 
 
 class SingleThrustPublisher(Node):

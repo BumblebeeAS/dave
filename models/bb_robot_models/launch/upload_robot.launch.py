@@ -141,7 +141,6 @@ def generate_launch_description():
                     [
                         FindPackageShare("bb_robot_models"),
                         "config",
-                        namespace,
                         "robot_config.py",
                     ]
                 )
