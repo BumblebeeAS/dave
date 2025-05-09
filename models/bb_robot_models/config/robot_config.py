@@ -74,9 +74,11 @@ def launch_setup(context, *args, **kwargs):
         f"{gz_base}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
         f"{gz_base}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
         f"/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        f"{ros_base}/front_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
+        f"{ros_base}/front_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+        f"{ros_base}/bot_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
+        f"{ros_base}/bot_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
         # f"{gz_base}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
-        # f"{gz_base}/camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
-        # f"{gz_base}/camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
     ]
 
     bridge = Node(
