@@ -23,7 +23,7 @@ setup(
             "moveFrontTest = unit_tests.move_front:main",
             "thrust_republisher = control.thrust_republisher:main",
             "bb_thrust_republisher = control.bb_thrust_republisher:main",
-            "bb_odom_to_odom_ned_repub = control.bb_odom_to_odom_ned_repub:main"
+            "bb_odom_republisher = control.bb_odom_republisher:main"
         ],
     },
 )

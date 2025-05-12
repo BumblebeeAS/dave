@@ -27,10 +27,10 @@ class ThrustRepublisher(Node):
         self.get_logger().info("Thrust republisher node initialized")
 
     def thruster_callback(self, msg: Thrusters):
-        self.get_logger().info(f'Published {msg}')
+        # self.get_logger().info(f'Published {msg}')
 
         if len(msg.values) != 7:
-            self.get_logger().warn(f'Expected 7 values, but got {len(msg.values)}')
+            self.get_logger().warn(f'ThrustRepublisher: Expected 7 values, but got {len(msg.values)}')
             return
 
         thruster_mappings = [0, 5, 2, 1, 4, 3, 6]
@@ -40,7 +40,7 @@ class ThrustRepublisher(Node):
             force_msg.data = float(msg.values[thruster_mappings[i]]) / 100
             # self.get_logger().info(f'got thruster {i} with force {force_msg.data}')
             self.thrust_pubs[i].publish(force_msg)
-            self.get_logger().info(f'Published {force_msg.data} to /auv4/sim/thruster/t{i}/force')
+            # self.get_logger().info(f'Published {force_msg.data} to /auv4/sim/thruster/t{i}/force')
         
 
 

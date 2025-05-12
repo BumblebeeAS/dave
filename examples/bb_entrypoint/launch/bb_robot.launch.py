@@ -11,7 +11,7 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
-
+from launch_ros.actions import Node
 
 def launch_setup(context, *args, **kwargs):
     paused = LaunchConfiguration("paused")
@@ -104,7 +104,25 @@ def launch_setup(context, *args, **kwargs):
         )
     )
 
-    include = [gz_sim_launch, robot_launch, robot_description_launch]
+    # Thruster republisher found in dave/examples/control/control/bb_thrust_republisher
+    thrust_republisher_node = Node(
+        package="control",
+        executable="bb_thrust_republisher",
+        name="bb_thrust_republisher",
+        namespace=namespace,
+        output="screen"
+    )
+
+    # Odom republisher found in dave/examples/control/control/bb_odom_republisher
+    odom_republisher_node = Node(
+        package="control",
+        executable="bb_odom_republisher",
+        name="bb_odom_republisher",
+        namespace=namespace,
+        output="screen"
+    )
+
+    include = [gz_sim_launch, robot_launch, robot_description_launch, thrust_republisher_node, odom_republisher_node]
 
     return include
 
