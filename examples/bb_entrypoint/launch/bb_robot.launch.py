@@ -123,12 +123,38 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
+    image_repub_node_1 = Node(
+        package="image_transport",
+        executable="republish",
+        name="image_republisher",
+        arguments=["raw", "compressed"],
+        output="screen",
+        remappings=[
+            ("in", "/auv4/front_cam/color/image"),
+            ("out/compressed", "/auv4/front_cam/color/image/compressed"),
+        ],
+    )
+
+    image_repub_node_2 = Node(
+        package="image_transport",
+        executable="republish",
+        name="image_republisher",
+        arguments=["raw", "compressed"],
+        output="screen",
+        remappings=[
+            ("in", "/auv4/bot_cam/color/image"),
+            ("out/compressed", "/auv4/bot_cam/color/image/compressed"),
+        ],
+    )
+
     include = [
         gz_sim_launch,
         robot_launch,
         robot_description_launch,
         thrust_republisher_node,
         odom_republisher_node,
+        image_repub_node_1,
+        image_repub_node_2,
     ]
 
     return include
