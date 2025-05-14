@@ -34,10 +34,11 @@ def launch_setup(context, *args, **kwargs):
 
     # Add remappings for other topics
     additional_remappings = [
-        create_remapping("/odometry", "/odometry"),
-        create_remapping("/odometry_with_covariance", "/map_odom_ned"),
+        create_remapping("/odometry", "/nav/odom"),
+        create_remapping("/odometry_with_covariance", "/nav/odom_with_cov"),
         create_remapping("/pose", "/pose"),
         create_remapping("/imu", "/imu"),
+        (f"{gz_base}/odom_tf", "/tf"),
         # Commented out as in original file
         # create_remapping("/magnetometer", "/magnetometer"),
         # create_remapping("/camera/image", "/camera/image"),
@@ -73,11 +74,12 @@ def launch_setup(context, *args, **kwargs):
         f"{gz_base}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
         f"{gz_base}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
         f"{gz_base}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
-        f"/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
         f"{ros_base}/front_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
         f"{ros_base}/front_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
         f"{ros_base}/bot_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
         f"{ros_base}/bot_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+        f"{gz_base}/odom_tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V",
         # f"{gz_base}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
     ]
 

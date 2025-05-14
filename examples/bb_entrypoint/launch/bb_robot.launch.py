@@ -10,8 +10,9 @@ from launch.actions import (
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
 
 def launch_setup(context, *args, **kwargs):
     paused = LaunchConfiguration("paused")
@@ -28,7 +29,7 @@ def launch_setup(context, *args, **kwargs):
     roll = LaunchConfiguration("roll")
     pitch = LaunchConfiguration("pitch")
     yaw = LaunchConfiguration("yaw")
-    use_ned_frame = LaunchConfiguration("use_ned_frame")
+    vehicle = LaunchConfiguration("vehicle")
 
     if world_name.perform(context) != "empty.sdf":
         world_name = LaunchConfiguration("world_name").perform(context)
@@ -90,7 +91,7 @@ def launch_setup(context, *args, **kwargs):
             "roll": roll,
             "pitch": pitch,
             "yaw": yaw,
-            "use_ned_frame": use_ned_frame,
+            "vehicle": vehicle,
         }.items(),
     )
 
@@ -110,7 +111,7 @@ def launch_setup(context, *args, **kwargs):
         executable="bb_thrust_republisher",
         name="bb_thrust_republisher",
         namespace=namespace,
-        output="screen"
+        output="screen",
     )
 
     # Odom republisher found in dave/examples/control/control/bb_odom_republisher
@@ -119,16 +120,21 @@ def launch_setup(context, *args, **kwargs):
         executable="bb_odom_republisher",
         name="bb_odom_republisher",
         namespace=namespace,
-        output="screen"
+        output="screen",
     )
 
-    include = [gz_sim_launch, robot_launch, robot_description_launch, thrust_republisher_node, odom_republisher_node]
+    include = [
+        gz_sim_launch,
+        robot_launch,
+        robot_description_launch,
+        thrust_republisher_node,
+        odom_republisher_node,
+    ]
 
     return include
 
 
 def generate_launch_description():
-
     # Declare the launch arguments with default values
     args = [
         DeclareLaunchArgument(
@@ -202,9 +208,9 @@ def generate_launch_description():
             description="Initial yaw angle",
         ),
         DeclareLaunchArgument(
-            "use_ned_frame",
-            default_value="false",
-            description="Flag to indicate whether to use the north-east-down frame",
+            "vehicle",
+            default_value="auv4",
+            description="Vehicle name",
         ),
     ]
 

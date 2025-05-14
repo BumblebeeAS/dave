@@ -23,7 +23,7 @@ def generate_launch_description():
     roll = LaunchConfiguration("roll")
     pitch = LaunchConfiguration("pitch")
     yaw = LaunchConfiguration("yaw")
-    use_ned_frame = LaunchConfiguration("use_ned_frame")
+    vehicle = LaunchConfiguration("vehicle")
 
     args = [
         DeclareLaunchArgument(
@@ -72,9 +72,9 @@ def generate_launch_description():
             description="Initial yaw",
         ),
         DeclareLaunchArgument(
-            "use_ned_frame",
-            default_value="false",
-            description="Use North-East-Down frame",
+            "vehicle",
+            default_value="auv4",
+            description="Vehicle name",
         ),
     ]
 
@@ -84,25 +84,6 @@ def generate_launch_description():
             "urdf",
             "auv4.gazebo.urdf",
         ]
-    )
-
-    tf2_spawner = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="world_to_world_ned",
-        arguments=[
-            "--roll",
-            "1.57",
-            "--yaw",
-            "3.14",
-            "--frame_id",
-            "world",
-            "--child_frame_id",
-            "world_ned",
-        ],
-        output="both",
-        condition=IfCondition(use_ned_frame),
-        parameters=[{"use_sim_time": use_sim_time}],
     )
 
     gz_spawner = Node(
@@ -131,7 +112,39 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}],
     )
 
-    nodes = [tf2_spawner, gz_spawner]
+    nodes = [
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="world2world_ned",
+            arguments=[
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "3.141592653589793",
+                "world",
+                "world_ned",
+            ],
+        ),
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="base_link2base_link_ned",
+            arguments=[
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "3.141592653589793",
+                [vehicle, "/base_link"],
+                [vehicle, "/base_link_ned"],
+            ],
+        ),
+        gz_spawner,
+    ]
 
     # Include robot_config.py based on the model name
     robot_config = IncludeLaunchDescription(

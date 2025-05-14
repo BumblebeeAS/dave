@@ -4,16 +4,18 @@ from rclpy.node import Node
 
 
 class OdomToNED(Node):
-    # Converts sim odometry (NWU) to NED frame
+    # Converts sim odometry (FLU) to NED frame
 
     def __init__(self):
-        super().__init__('odom_to_ned')
-        self.sub = self.create_subscription(Odometry, '/auv4/odometry', self.cb, 10)
-        self.pub = self.create_publisher(Odometry, '/auv4/nav/odom_ned', 10)
+        super().__init__("odom_to_ned")
+        self.sub = self.create_subscription(Odometry, "/auv4/nav/odom", self.cb, 10)
+        self.pub = self.create_publisher(Odometry, "/auv4/nav/odom_ned", 10)
 
     def cb(self, msg: Odometry):
         ned_msg = Odometry()
-        ned_msg.header = msg.header
+        ned_msg.header.stamp = msg.header.stamp
+        ned_msg.header.frame_id = "world_ned"
+        ned_msg.child_frame_id = "auv4/base_link_ned"
 
         # Position
         ned_msg.pose.pose.position.x = msg.pose.pose.position.x
@@ -37,6 +39,7 @@ class OdomToNED(Node):
         ned_msg.twist.twist.angular.z = -msg.twist.twist.angular.z
 
         self.pub.publish(ned_msg)
+
 
 def main(args=None):
     rclpy.init(args=args)
