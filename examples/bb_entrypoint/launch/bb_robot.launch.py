@@ -126,7 +126,7 @@ def launch_setup(context, *args, **kwargs):
     image_repub_node_1 = Node(
         package="image_transport",
         executable="republish",
-        name="image_republisher",
+        name="image_republisher_front_cam",
         arguments=["raw", "compressed"],
         output="screen",
         remappings=[
@@ -138,7 +138,7 @@ def launch_setup(context, *args, **kwargs):
     image_repub_node_2 = Node(
         package="image_transport",
         executable="republish",
-        name="image_republisher",
+        name="image_republisher_bot_cam",
         arguments=["raw", "compressed"],
         output="screen",
         remappings=[
