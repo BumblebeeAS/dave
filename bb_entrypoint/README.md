@@ -11,9 +11,3 @@ ros2 topic list
 ```bash
 gz topic -l
 ```
-
-# Test Controls
-
-```bash
-ros2 run control moveFrontTest
-```

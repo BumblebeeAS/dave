@@ -1,6 +1,3 @@
-import os
-
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
@@ -10,7 +7,6 @@ from launch.actions import (
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -95,66 +91,9 @@ def launch_setup(context, *args, **kwargs):
         }.items(),
     )
 
-    robot_description_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("auv4_description"),
-                "launch",
-                "tf.launch.py",
-            )
-        )
-    )
-
-    # Thruster republisher found in dave/examples/control/control/bb_thrust_republisher
-    thrust_republisher_node = Node(
-        package="control",
-        executable="bb_thrust_republisher",
-        name="bb_thrust_republisher",
-        namespace=namespace,
-        output="screen",
-    )
-
-    # Odom republisher found in dave/examples/control/control/bb_odom_republisher
-    odom_republisher_node = Node(
-        package="control",
-        executable="bb_odom_republisher",
-        name="bb_odom_republisher",
-        namespace=namespace,
-        output="screen",
-    )
-
-    image_repub_node_1 = Node(
-        package="image_transport",
-        executable="republish",
-        name="image_republisher_front_cam",
-        arguments=["raw", "compressed"],
-        output="screen",
-        remappings=[
-            ("in", "/auv4/front_cam/color/image"),
-            ("out/compressed", "/auv4/front_cam/color/image/compressed"),
-        ],
-    )
-
-    image_repub_node_2 = Node(
-        package="image_transport",
-        executable="republish",
-        name="image_republisher_bot_cam",
-        arguments=["raw", "compressed"],
-        output="screen",
-        remappings=[
-            ("in", "/auv4/bot_cam/color/image"),
-            ("out/compressed", "/auv4/bot_cam/color/image/compressed"),
-        ],
-    )
-
     include = [
         gz_sim_launch,
         robot_launch,
-        robot_description_launch,
-        thrust_republisher_node,
-        odom_republisher_node,
-        image_repub_node_1,
-        image_repub_node_2,
     ]
 
     return include

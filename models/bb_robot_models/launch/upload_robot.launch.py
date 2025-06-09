@@ -1,3 +1,6 @@
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
@@ -143,10 +146,45 @@ def generate_launch_description():
                 [vehicle, "/base_link_ned"],
             ],
         ),
+        Node(
+            package="bb_robot_models",
+            executable="bb_thrust_republisher.py",
+            name="bb_thrust_republisher",
+            namespace=namespace,
+            output="screen",
+        ),
+        Node(
+            package="bb_robot_models",
+            executable="bb_odom_republisher.py",
+            name="bb_odom_republisher",
+            namespace=namespace,
+            output="screen",
+        ),
+        Node(
+            package="image_transport",
+            executable="republish",
+            name="image_republisher_front_cam",
+            arguments=["raw", "compressed"],
+            output="screen",
+            remappings=[
+                ("in", "/auv4/front_cam/color/image"),
+                ("out/compressed", "/auv4/front_cam/color/image/compressed"),
+            ],
+        ),
+        Node(
+            package="image_transport",
+            executable="republish",
+            name="image_republisher_bot_cam",
+            arguments=["raw", "compressed"],
+            output="screen",
+            remappings=[
+                ("in", "/auv4/bot_cam/color/image"),
+                ("out/compressed", "/auv4/bot_cam/color/image/compressed"),
+            ],
+        ),
         gz_spawner,
     ]
 
-    # Include robot_config.py based on the model name
     robot_config = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -164,7 +202,17 @@ def generate_launch_description():
         }.items(),
     )
 
-    include = [robot_config]
+    robot_description_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("auv4_description"),
+                "launch",
+                "tf.launch.py",
+            )
+        )
+    )
+
+    include = [robot_config, robot_description_launch]
 
     event_handlers = [
         RegisterEventHandler(

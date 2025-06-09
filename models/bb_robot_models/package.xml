@@ -6,9 +6,15 @@
   <maintainer email="rakeshvivek97@gmail.com">Rakesh Vivekanandan</maintainer>
   <license>MIT</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+
+  <depend>auv4_description</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
-    <depend>auv4_description</depend>
     <!-- This doesn't work yet https://github.com/gazebosim/ros_gz/pull/492 -->
     <!-- <gazebo_ros gazebo_model_path="${prefix}/meshes"/> -->
   </export>
