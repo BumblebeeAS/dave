@@ -139,7 +139,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "namespace",
-            default_value="",
+            default_value="auv4",
             description="Namespace",
         ),
         DeclareLaunchArgument(

@@ -41,7 +41,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "namespace",
-            default_value="",
+            default_value="auv4",
             description="Namespace",
         ),
         DeclareLaunchArgument(
@@ -222,4 +222,4 @@ def generate_launch_description():
         )
     ]
 
-    return LaunchDescription(args + nodes + event_handlers + include)
+    return LaunchDescription(args + event_handlers + include + nodes)
