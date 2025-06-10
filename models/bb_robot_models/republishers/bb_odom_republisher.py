@@ -5,11 +5,13 @@ from nav_msgs.msg import Odometry
 from rclpy.node import Node
 
 
-class OdomToNED(Node):
-    # Converts sim odometry (FLU) to NED frame
+class OdomRepublisher(Node):
+    """
+    Converts sim odometry (FLU) into controls odometry (NED)
+    """
 
     def __init__(self):
-        super().__init__("odom_to_ned")
+        super().__init__("odom_republisher")
         self.sub = self.create_subscription(Odometry, "/auv4/nav/odom", self.cb, 10)
         self.pub = self.create_publisher(Odometry, "/auv4/nav/odom_ned", 10)
 
@@ -45,7 +47,18 @@ class OdomToNED(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = OdomToNED()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    node = OdomRepublisher()
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    except Exception as e:
+        node.get_logger().error(f"Error in odom republisher node: {str(e)}")
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
