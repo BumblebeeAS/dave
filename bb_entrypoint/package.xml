@@ -6,6 +6,10 @@
   <maintainer email="rakeshvivek97@gmail.com">Rakesh Vivekanandan</maintainer>
   <license>MIT</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>bb_robot_models</depend>
+  <depend>bb_worlds</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
