@@ -1,6 +1,3 @@
-import os
-
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
@@ -202,17 +199,7 @@ def generate_launch_description():
         }.items(),
     )
 
-    robot_description_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory("auv4_description"),
-                "launch",
-                "tf.launch.py",
-            )
-        )
-    )
-
-    include = [robot_config, robot_description_launch]
+    include = [robot_config]
 
     event_handlers = [
         RegisterEventHandler(
