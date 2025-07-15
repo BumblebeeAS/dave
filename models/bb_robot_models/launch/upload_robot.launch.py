@@ -158,6 +158,13 @@ def generate_launch_description():
             output="screen",
         ),
         Node(
+            package="bb_robot_models",
+            executable="grabber_action_server.py",
+            name="grabber_action_server",
+            namespace=namespace,
+            output="screen",
+        ),
+        Node(
             package="image_transport",
             executable="republish",
             name="image_republisher_front_cam",

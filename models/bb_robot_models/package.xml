@@ -12,6 +12,7 @@
   <exec_depend>rclpy</exec_depend>
 
   <depend>auv4_description</depend>
+  <depend>bb_auv_msgs</depend>
   <depend>bb_controls_msgs</depend>
 
   <export>

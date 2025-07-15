@@ -20,6 +20,8 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   republishers/bb_odom_republisher.py
   republishers/bb_thrust_republisher.py
+  republishers/dummy_action_server.py
+  republishers/grabber_action_server.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
