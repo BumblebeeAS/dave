@@ -3,6 +3,7 @@
 import rclpy
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
+from std_msgs.msg import Float32
 
 
 class OdomRepublisher(Node):
@@ -14,6 +15,7 @@ class OdomRepublisher(Node):
         super().__init__("odom_republisher")
         self.sub = self.create_subscription(Odometry, "/auv4/nav/odom", self.cb, 10)
         self.pub = self.create_publisher(Odometry, "/auv4/nav/odom_ned", 10)
+        self.depth_pub = self.create_publisher(Float32, "/auv4/depth", 10)
 
     def cb(self, msg: Odometry):
         ned_msg = Odometry()
@@ -43,6 +45,10 @@ class OdomRepublisher(Node):
         ned_msg.twist.twist.angular.z = -msg.twist.twist.angular.z
 
         self.pub.publish(ned_msg)
+
+        depth_msg = Float32()
+        depth_msg.data = -msg.pose.pose.position.z
+        self.depth_pub.publish(depth_msg)
 
 
 def main(args=None):
