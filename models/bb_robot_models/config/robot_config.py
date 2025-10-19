@@ -1,95 +1,56 @@
+import os
+import tempfile
+
+import yaml
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
+def substitute_namespace_in_config(config_content, namespace):
+    """
+    Replace ${namespace} placeholder in YAML config content with actual namespace.
+
+    Args:
+        config_content: String content of the YAML file
+        namespace: The namespace value to substitute
+
+    Returns:
+        String with substituted namespace
+    """
+    return config_content.replace("${namespace}", namespace)
+
+
 def launch_setup(context, *args, **kwargs):
+    """
+    Launch setup function that reads YAML config and substitutes namespace.
+    """
     namespace = LaunchConfiguration("namespace").perform(context)
 
-    # Define base topics for both source (Gazebo) and target (ROS2)
-    gz_base = f"/model/{namespace}"
-    ros_base = f"/{namespace}"
+    pkg_share = get_package_share_directory("bb_robot_models")
+    config_file_path = os.path.join(pkg_share, "config", "ros_gz_bridge_config.yaml")
 
-    # Helper function to create remapping pairs
-    def create_remapping(gz_topic, ros_topic):
-        return (f"{gz_base}{gz_topic}", f"{ros_base}{ros_topic}")
+    with open(config_file_path, "r") as f:
+        config_content = f.read()
 
-    # Create remapping rules for thrusters
-    remappings = []
-    for thruster in range(1, 7 + 1):
-        ros_thruster = thruster - 1
-        joint_base = f"/joint/thruster_{thruster}_joint"
-        remappings.extend(
-            [
-                create_remapping(
-                    f"{joint_base}/cmd_thrust", f"/sim/thruster/t{ros_thruster}/force"
-                ),
-                create_remapping(f"{joint_base}/ang_vel", f"{joint_base}/ang_vel"),
-                create_remapping(
-                    f"{joint_base}/enable_deadband", f"{joint_base}/enable_deadband"
-                ),
-            ]
-        )
+    config_content = substitute_namespace_in_config(config_content, namespace)
 
-    # Add remappings for other topics
-    additional_remappings = [
-        create_remapping("/odometry", "/nav/odom"),
-        create_remapping("/odometry_with_covariance", "/nav/odom_with_cov"),
-        create_remapping("/pose", "/pose"),
-        create_remapping("/imu", "/imu"),
-        (f"{gz_base}/odom_tf", "/tf"),
-        # Commented out as in original file
-        # create_remapping("/magnetometer", "/magnetometer"),
-        # create_remapping("/camera/image", "/camera/image"),
-        # create_remapping("/camera/camera_info", "/camera/camera_info"),
-        # Unable to add sim dvl because of the special Dave Message type
-    ]
-    remappings.extend(additional_remappings)
+    config_data = yaml.safe_load(config_content)
 
-    # Create topic arguments for the bridge
-    thruster_joints = []
-    for thruster in range(1, 7 + 1):
-        thruster_joints.append(f"{gz_base}/joint/thruster_{thruster}_joint")
-
-    thruster_cmd_thrust_args = [
-        f"{joint}/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double"
-        for joint in thruster_joints
-    ]
-    thruster_ang_vel_args = [
-        f"{joint}/ang_vel@std_msgs/msg/Float64@gz.msgs.Double"
-        for joint in thruster_joints
-    ]
-    thruster_enable_deadband_args = [
-        f"{joint}/enable_deadband@std_msgs/msg/Bool@gz.msgs.Boolean"
-        for joint in thruster_joints
-    ]
-
-    thruster_args = (
-        thruster_cmd_thrust_args + thruster_ang_vel_args + thruster_enable_deadband_args
-    )
-
-    arguments = thruster_args + [
-        f"{gz_base}/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
-        f"{gz_base}/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance",
-        f"{gz_base}/pose@geometry_msgs/msg/PoseArray@gz.msgs.Pose_V",
-        f"{gz_base}/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
-        "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-        f"{ros_base}/front_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
-        f"{ros_base}/front_cam/color/image/compressed@sensor_msgs/msg/CompressedImage@gz.msgs.CompressedImage",
-        f"{ros_base}/front_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-        f"{ros_base}/bot_cam/color/image@sensor_msgs/msg/Image@gz.msgs.Image",
-        f"{ros_base}/front_cam/color/image/compressed@sensor_msgs/msg/CompressedImage@gz.msgs.CompressedImage",
-        f"{ros_base}/bot_cam/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-        f"{gz_base}/odom_tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V",
-        # f"{gz_base}/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer",
-    ]
+    temp_config = tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".yaml")
+    temp_config.write(config_content)
+    temp_config.close()
 
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=arguments,
-        remappings=remappings,
+        parameters=[
+            {
+                "config_file": temp_config.name,
+            }
+        ],
         output="screen",
     )
 
@@ -97,6 +58,9 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
+    """
+    Generate the launch description.
+    """
     args = [
         DeclareLaunchArgument(
             "namespace",
@@ -104,4 +68,5 @@ def generate_launch_description():
             description="Namespace",
         ),
     ]
+
     return LaunchDescription(args + [OpaqueFunction(function=launch_setup)])
