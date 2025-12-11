@@ -8,7 +8,7 @@ find_package(rclcpp REQUIRED)
 
 install(
   DIRECTORY launch config
-  DESTINATION share/bb_robot_models
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_environment_hooks(
@@ -18,10 +18,9 @@ ament_environment_hooks(
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
-  republishers/bb_odom_republisher.py
-  republishers/bb_thrust_republisher.py
-  republishers/dummy_action_server.py
-  republishers/grabber_action_server.py
+  bb_robot_models/flu_to_ned_odom_repub.py
+  bb_robot_models/auv4/auv4_thrust_repub.py
+  bb_robot_models/auv4/grabber_action_server.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

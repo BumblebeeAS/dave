@@ -23,7 +23,6 @@ def generate_launch_description():
     roll = LaunchConfiguration("roll")
     pitch = LaunchConfiguration("pitch")
     yaw = LaunchConfiguration("yaw")
-    vehicle = LaunchConfiguration("vehicle")
 
     args = [
         DeclareLaunchArgument(
@@ -71,11 +70,6 @@ def generate_launch_description():
             default_value="0.0",
             description="Initial yaw",
         ),
-        DeclareLaunchArgument(
-            "vehicle",
-            default_value="auv4",
-            description="Vehicle name",
-        ),
     ]
 
     description_file = PathJoinSubstitution(
@@ -116,6 +110,21 @@ def generate_launch_description():
         Node(
             package="tf2_ros",
             executable="static_transform_publisher",
+            name="world2map",
+            arguments=[
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "world",
+                "map",
+            ],
+        ),
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
             name="world2world_ned",
             arguments=[
                 "0",
@@ -131,6 +140,21 @@ def generate_launch_description():
         Node(
             package="tf2_ros",
             executable="static_transform_publisher",
+            name="map2map_ned",
+            arguments=[
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "3.141592653589793",
+                "map",
+                "map_ned",
+            ],
+        ),
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
             name="base_link2base_link_ned",
             arguments=[
                 "0",
@@ -139,21 +163,21 @@ def generate_launch_description():
                 "0",
                 "0",
                 "3.141592653589793",
-                [vehicle, "/base_link"],
-                [vehicle, "/base_link_ned"],
+                [namespace, "/base_link"],
+                [namespace, "/base_link_ned"],
             ],
         ),
         Node(
             package="bb_robot_models",
-            executable="bb_thrust_republisher.py",
-            name="bb_thrust_republisher",
+            executable="auv4_thrust_repub.py",
+            name="auv4_thrust_repub",
             namespace=namespace,
             output="screen",
         ),
         Node(
             package="bb_robot_models",
-            executable="bb_odom_republisher.py",
-            name="bb_odom_republisher",
+            executable="flu_to_ned_odom_repub.py",
+            name="auv4_flu_to_ned_odom_repub",
             namespace=namespace,
             output="screen",
         ),
@@ -167,7 +191,7 @@ def generate_launch_description():
         Node(
             package="image_transport",
             executable="republish",
-            name="image_republisher_front_cam",
+            name="image_compressor_front_cam",
             arguments=["raw", "compressed"],
             output="screen",
             remappings=[
@@ -178,7 +202,7 @@ def generate_launch_description():
         Node(
             package="image_transport",
             executable="republish",
-            name="image_republisher_bot_cam",
+            name="image_compressor_bot_cam",
             arguments=["raw", "compressed"],
             output="screen",
             remappings=[
@@ -196,6 +220,7 @@ def generate_launch_description():
                     [
                         FindPackageShare("bb_robot_models"),
                         "config",
+                        namespace,
                         "robot_config.py",
                     ]
                 )

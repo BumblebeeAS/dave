@@ -30,7 +30,9 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration("namespace").perform(context)
 
     pkg_share = get_package_share_directory("bb_robot_models")
-    config_file_path = os.path.join(pkg_share, "config", "ros_gz_bridge_config.yaml")
+    config_file_path = os.path.join(
+        pkg_share, "config", namespace, "ros_gz_bridge_config.yaml"
+    )
 
     with open(config_file_path, "r") as f:
         config_content = f.read()

@@ -2,7 +2,7 @@
 
 import rclpy
 from bb_auv_msgs.action import Grabber
-from dummy_action_server import DummyActionServer
+from bb_robot_models.dummy_action_server import DummyActionServer
 
 
 def main(args=None):

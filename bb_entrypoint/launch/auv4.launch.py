@@ -25,7 +25,6 @@ def launch_setup(context, *args, **kwargs):
     roll = LaunchConfiguration("roll")
     pitch = LaunchConfiguration("pitch")
     yaw = LaunchConfiguration("yaw")
-    vehicle = LaunchConfiguration("vehicle")
 
     if world_name.perform(context) != "empty.sdf":
         world_name = LaunchConfiguration("world_name").perform(context)
@@ -72,7 +71,7 @@ def launch_setup(context, *args, **kwargs):
                     [
                         FindPackageShare("bb_robot_models"),
                         "launch",
-                        "upload_robot.launch.py",
+                        "auv4_upload_robot.launch.py",
                     ]
                 )
             ]
@@ -87,7 +86,6 @@ def launch_setup(context, *args, **kwargs):
             "roll": roll,
             "pitch": pitch,
             "yaw": yaw,
-            "vehicle": vehicle,
         }.items(),
     )
 
@@ -114,7 +112,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "use_sim_time",
-            default_value="true",
+            default_value="false",
             description="Flag to indicate whether to use simulation time",
         ),
         DeclareLaunchArgument(
@@ -171,11 +169,6 @@ def generate_launch_description():
             "yaw",
             default_value="0.0",
             description="Initial yaw angle",
-        ),
-        DeclareLaunchArgument(
-            "vehicle",
-            default_value="auv4",
-            description="Vehicle name",
         ),
     ]
 
