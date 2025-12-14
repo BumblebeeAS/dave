@@ -7,7 +7,7 @@ set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS TRUE CACHE BOOL
 # Set CMP0144 to NEW to ensure find_package
 # uses upper-case <PACKAGENAME>_ROOT variables.
 
-cmake_policy(SET CMP0144 NEW)
+# cmake_policy(SET CMP0144 NEW) # Disable for compatibility with ROS2 Humble/CMake
 
 project(multibeam_sonar)
 
@@ -22,6 +22,7 @@ if(CUDAToolkit_FOUND)
   find_package(CUDA REQUIRED)
   message(STATUS "CUDA found, enabling CUDA support.")
   include_directories(${CUDA_INCLUDE_DIRS})
+  # include_directories(/usr/local/cuda-13.1/include/cccl) # Only if using a more recent CUDA version
   set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_${CUDA_ARCHITECTURE}")
   find_package(gz-cmake3 REQUIRED)
   find_package(gz-sim8 REQUIRED)

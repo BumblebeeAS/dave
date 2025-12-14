@@ -49,7 +49,8 @@
 #include "sonar_calculation_cuda.cuh"
 
 #include <sys/stat.h>
-#include <cv_bridge/cv_bridge.hpp>
+// #include <cv_bridge/cv_bridge.hpp>
+#include <cv_bridge/cv_bridge.h> // Modified for ROS2 Humble compatibility
 #include <geometry_msgs/msg/vector3.hpp>
 #include <marine_acoustic_msgs/msg/ping_info.hpp>
 #include <marine_acoustic_msgs/msg/sonar_image_data.hpp>
