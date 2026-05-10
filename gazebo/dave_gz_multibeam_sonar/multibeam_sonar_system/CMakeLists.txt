@@ -11,6 +11,7 @@ if(CUDAToolkit_FOUND)
   find_package(gz-rendering8 REQUIRED OPTIONAL_COMPONENTS ogre ogre2)
   find_package(gz-sim8 REQUIRED)
   find_package(gz-sensors8 REQUIRED)
+  find_package(fastcdr REQUIRED)
 
   set(GZ_COMMON_VER ${gz-common5_VERSION_MAJOR})
   set(GZ_PLUGIN_VER ${gz-plugin2_VERSION_MAJOR})

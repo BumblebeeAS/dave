@@ -23,6 +23,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(gz-msgs10 REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(fastcdr REQUIRED)
 
 # Set version variables with gazebo Harmonic
 set(GZ_PLUGIN_VER ${gz-plugin2_VERSION_MAJOR})
