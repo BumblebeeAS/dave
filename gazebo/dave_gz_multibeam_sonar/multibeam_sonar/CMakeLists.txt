@@ -22,6 +22,14 @@ if(CUDAToolkit_FOUND)
   find_package(CUDA REQUIRED)
   message(STATUS "CUDA found, enabling CUDA support.")
   include_directories(${CUDA_INCLUDE_DIRS})
+  # CUDA 13 installs Thrust under include/cccl; older toolkits use include.
+  find_path(THRUST_INCLUDE_DIR thrust/complex.h
+    HINTS ${CUDAToolkit_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS}
+    PATH_SUFFIXES cccl
+  )
+  if(NOT THRUST_INCLUDE_DIR)
+    message(FATAL_ERROR "Thrust headers not found in the CUDA Toolkit")
+  endif()
   set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_${CUDA_ARCHITECTURE}")
   find_package(gz-cmake3 REQUIRED)
   find_package(gz-sim8 REQUIRED)
@@ -71,6 +79,7 @@ if(CUDAToolkit_FOUND)
     ${gz-rendering${GZ_RENDERING_VER}_INCLUDE_DIRS}
     ${gz-msgs${GZ_MSGS_VER}_INCLUDE_DIRS}
     ${CUDA_INCLUDE_DIRS}
+    ${THRUST_INCLUDE_DIR}
     ${gz-transport${GZ_TRANSPORT_VER}_INCLUDE_DIRS}
     ${gz-sim${GZ_SIM_VER}_INCLUDE_DIRS}
   )
